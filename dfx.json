@@ -1,0 +1,41 @@
+{
+  "canisters": {
+    "internet_identity": {
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "frontend": {},
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "type": "custom",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    },
+    "open_hours_backend": {
+      "candid": "src/open_hours_backend/open_hours_backend.did",
+      "declarations": {
+        "node_compatibility": true
+      },
+      "package": "open_hours_backend",
+      "type": "rust"
+    },
+    "open_hours_frontend": {
+      "dependencies": [
+        "open_hours_backend"
+      ],
+      "source": [
+        "src/open_hours_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "open_hours_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
