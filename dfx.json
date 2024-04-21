@@ -17,7 +17,9 @@
         "node_compatibility": true
       },
       "package": "open_hours_backend",
-      "type": "rust"
+      "type": "custom",
+      "build": "./build.sh open_hours_backend",
+      "wasm": "target/wasm32-unknown-unknown/release/open_hours_backend.wasm"
     },
     "open_hours_frontend": {
       "dependencies": [
