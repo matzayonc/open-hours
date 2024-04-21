@@ -1,30 +1,43 @@
 {
-  "name": "open_hours_frontend",
+	"name": "open_hours_frontend",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
+	"version": "0.0.1",
+	"scripts": {
     "setup": "npm i && dfx canister create open_hours_backend && dfx generate open_hours_backend && dfx deploy",
     "start": "vite --port 3000",
     "prebuild": "dfx generate",
     "build": "tsc && vite build",
-    "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\""
-  },
+    "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
+		"test": "vitest",
+		"lint": "prettier --check . && eslint ."
+	},
   "dependencies": {
     "@dfinity/agent": "^0.20.0",
     "@dfinity/candid": "^0.20.0",
     "@dfinity/principal": "^0.20.0"
   },
-  "devDependencies": {
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-static": "^2.0.0",
-    "@sveltejs/kit": "^1.21.0",
-    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^8.56.0",
+		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/parser": "^7.0.0",
     "dotenv": "^16.3.1",
     "sass": "^1.63.6",
-    "svelte": "^4.0.1",
-    "svelte-check": "^3.4.4",
-    "typescript": "^5.1.3",
-    "vite": "^4.3.9",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.36.0-next.4",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"svelte": "^5.0.0-next.1",
+		"svelte-check": "^3.6.0",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^5.0.3",
+		"vitest": "^1.2.0",
     "vite-plugin-environment": "^1.1.3"
-  }
+	},
+	"type": "module"
 }
