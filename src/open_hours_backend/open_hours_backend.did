@@ -1,1 +1,5 @@
-service : { greet : (text) -> (text) query }
+service : {
+  get_open_for : (blob) -> (vec record { nat8; vec principal }) query;
+  get_open_hours_stats : () -> (nat64, vec vec nat16) query;
+  set_open_hours : (blob) -> ();
+}
