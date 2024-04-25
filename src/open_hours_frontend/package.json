@@ -1,31 +1,32 @@
 {
 	"name": "open_hours_frontend",
-  "private": true,
+	"private": true,
 	"version": "0.0.1",
 	"scripts": {
-    "setup": "npm i && dfx canister create open_hours_backend && dfx generate open_hours_backend && dfx deploy",
-    "start": "vite --port 3000",
-    "prebuild": "dfx generate",
-    "build": "tsc && vite build",
-    "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
+		"setup": "npm i && dfx canister create open_hours_backend && dfx generate open_hours_backend && dfx deploy",
+		"start": "vite --port 3000",
+		"prebuild": "dfx generate",
+		"build": "tsc && vite build",
+		"format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
 		"test": "vitest",
 		"lint": "prettier --check . && eslint ."
 	},
-  "dependencies": {
-    "@dfinity/agent": "^0.20.0",
-    "@dfinity/candid": "^0.20.0",
-    "@dfinity/principal": "^0.20.0"
-  },
+	"dependencies": {
+		"@dfinity/agent": "^0.20.0",
+		"@dfinity/candid": "^0.20.0",
+		"@dfinity/principal": "^0.20.0",
+		"@dfinity/auth-client": "^0.20.0"
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/adapter-static": "^2.0.0",
+		"@sveltejs/adapter-static": "^2.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
-    "dotenv": "^16.3.1",
-    "sass": "^1.63.6",
+		"dotenv": "^16.3.1",
+		"sass": "^1.63.6",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0-next.4",
@@ -37,10 +38,10 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.3",
 		"vitest": "^1.2.0",
-    "vite-plugin-environment": "^1.1.3",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3"
+		"vite-plugin-environment": "^1.1.3",
+		"autoprefixer": "^10.4.19",
+		"postcss": "^8.4.38",
+		"tailwindcss": "^3.4.3"
 	},
 	"type": "module"
 }
