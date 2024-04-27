@@ -1,5 +1,6 @@
 service : {
-  get_open_for : (blob) -> (vec record { nat8; vec principal }) query;
-  get_open_hours_stats : () -> (nat64, vec vec nat16) query;
+  open_at : (blob) -> (vec record { nat8; vec principal }) query;
+  open_counts : () -> (nat64, vec vec nat16) query;
+  open_for : (opt principal) -> (blob) query;
   set_open_hours : (blob) -> ();
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { anonymousBackend, connect } from '$lib/canisters';
+	import { Principal } from '@dfinity/principal';
 	import { onMount } from 'svelte';
 
 	let backend: any = $state(undefined);
@@ -8,11 +9,13 @@
 	onMount(async () => {
 		// if (!connectedBackend) connectedBackend = await connect();
 		if (!anonymousBackend) throw new Error('No backend connection');
-		stats = await anonymousBackend.get_open_hours_stats();
+		stats = await anonymousBackend.open_counts();
+		console.log('stats', stats);
 	});
 
 	function occupancy(day: string, hour: string) {
 		if (!stats) return 0;
+		if (stats[0] === 0n) return 0;
 		const total = Number(stats[0]);
 
 		// I choose to ignore computational complexity here
@@ -29,13 +32,10 @@
 	let chosen: number[] = $state([]);
 
 	function startMarking(day: string, hour: string) {
-		console.log('start marking');
-
 		const targetMarked = chosen.findIndex((v) => v == encodeSlot(day, hour)) != -1;
 		marking = targetMarked ? -1 : 1;
 
 		document.addEventListener('mouseup', () => {
-			console.log('end marking');
 			marking = 0;
 		});
 
@@ -54,20 +54,40 @@
 		return (hours.indexOf(hour) << 3) + days.indexOf(day);
 	}
 
-	async function publish() {
+	async function startConnecting() {
 		if (!backend) backend = await connect();
+		console.log('publishing', backend);
 		if (!backend) return console.error('No backend connection');
+	}
 
+	async function publish() {
 		const res = await backend.set_open_hours(chosen);
 		console.log(res);
 
-		stats = await anonymousBackend.get_open_hours_stats();
+		stats = await anonymousBackend.open_counts();
 	}
+
+	$effect(() => {
+		if (!backend) return;
+		backend.open_for([]).then((savedAlready: Uint8Array[]) => {
+			const parsed = savedAlready.map((v) => Number(v));
+			console.log('saved already', parsed);
+			chosen = [...chosen, ...parsed];
+		});
+	});
 </script>
 
 <header class="flex justify-between items-center">
 	<h1><b> Open Hours </b> - kiedy piwo?</h1>
-	<button onclick={publish} class="hover:bg-cyan-400 rounded-md bg-cyan-800 p-2">Publish</button>
+	{#if backend == undefined}
+		<button onclick={startConnecting} class="hover:bg-cyan-400 rounded-md bg-cyan-800 p-2">
+			Connect
+		</button>
+	{:else}
+		<button onclick={publish} class="hover:bg-cyan-400 rounded-md bg-cyan-800 p-2">
+			Publish
+		</button>
+	{/if}
 </header>
 
 <div class="select-none grid grid-cols-6 gaps-1">
