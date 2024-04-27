@@ -10,7 +10,6 @@
 		// if (!connectedBackend) connectedBackend = await connect();
 		if (!anonymousBackend) throw new Error('No backend connection');
 		stats = await anonymousBackend.open_counts();
-		console.log('stats', stats);
 	});
 
 	function occupancy(day: string, hour: string) {
@@ -30,6 +29,8 @@
 
 	let marking = $state(0);
 	let chosen: number[] = $state([]);
+	let openAt: number | undefined = $state(undefined);
+	let openDetails: string[] = $state([]);
 
 	function startMarking(day: string, hour: string) {
 		const targetMarked = chosen.findIndex((v) => v == encodeSlot(day, hour)) != -1;
@@ -67,6 +68,17 @@
 		stats = await anonymousBackend.open_counts();
 	}
 
+	async function slotClick(ev: MouseEvent, day: string, hour: string) {
+		if (ev.button == 0) startMarking(day, hour);
+		else if (ev.button == 2) {
+			const slot = encodeSlot(day, hour);
+			const res = await anonymousBackend.open_at([slot]);
+			openDetails = res.map((r: any) => Principal.fromUint8Array(r[1]).toText());
+			openAt = slot;
+		}
+		ev.preventDefault();
+	}
+
 	$effect(() => {
 		if (!backend) return;
 		backend.open_for([]).then((savedAlready: Uint8Array[]) => {
@@ -97,25 +109,23 @@
 				{day}
 			</div>
 			{#each hours as hour}
-				{#if chosen.findIndex((v) => v == encodeSlot(day, hour)) != -1}
-					<div
-						onmousedown={() => startMarking(day, hour)}
-						onmouseenter={() => mark(day, hour)}
-						class="time marked"
-					>
-						{hour}
-						{occupancy(day, hour)}%
-					</div>
-				{:else}
-					<div
-						onmousedown={() => startMarking(day, hour)}
-						onmouseenter={() => mark(day, hour)}
-						class="time"
-					>
-						{hour}
-						{occupancy(day, hour)}%
-					</div>
-				{/if}
+				<div
+					onmousedown={(e) => slotClick(e, day, hour)}
+					onmouseenter={() => mark(day, hour)}
+					class="time {chosen.findIndex((v) => v == encodeSlot(day, hour)) != -1 ? 'marked' : ''}"
+				>
+					{hour}
+					{occupancy(day, hour)}%
+					{#if openAt == encodeSlot(day, hour)}
+						<ol>
+							{#each openDetails as open}
+								<li>
+									{open}
+								</li>
+							{/each}
+						</ol>
+					{/if}
+				</div>
 			{/each}
 		</div>
 	{/each}
